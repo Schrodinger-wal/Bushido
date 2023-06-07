@@ -1,8 +1,7 @@
 const express = require ("express");
-const userSchema = require("../schemas/user")
-
 const router = express.Router();
 
+const userSchema = require("../schemas/user.schema")
 //create User
 
 router.post("/users", (req, res) => {

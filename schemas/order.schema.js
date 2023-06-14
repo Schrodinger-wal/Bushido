@@ -1,6 +1,6 @@
 const { SchemaType } = require('mongoose');
-const moongose = require ('moongose');
-const Schema = moongose.Schema;
+const mongoose = require ('mongoose');
+const Schema = mongoose.Schema;
 
 const orderSchema = new Schema ({
     customerName: {
@@ -12,7 +12,7 @@ const orderSchema = new Schema ({
         type: [
             {
                 productId: {
-                    type: moongose.Schema.types.ObjectID, 
+                    type: mongoose.Schema.Types.ObjectId, 
                     required: true,
                 },
                 quantity: {

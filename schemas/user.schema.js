@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
             message: props => `${props.value} no es un correo electrónico válido`
         }
     },
+    role: {
+        type: String,
+        required: true,
+        default: 'USER_ROLE',
+        enum: [ 'ADMIN_ROLE', 'USER_ROLE'],
+    },
     password: {
         type: String,
         required: true,
@@ -31,8 +37,16 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
+    image: {
+        type: String,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+
 })
 
 module.exports = mongoose.model('user', userSchema)

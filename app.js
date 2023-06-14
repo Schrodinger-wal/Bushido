@@ -17,6 +17,9 @@ const viewsRoutes = require ('./routes/views.routes');
 //cargar configuracion de plantillas express
 app.set('view engine', 'ejs');
 
+app.use(cors());
+
+
 app.use(express.static("public"));
 console.log("Middleware de archivos estáticos configurado correctamente.");
 

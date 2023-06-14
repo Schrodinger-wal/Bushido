@@ -2,10 +2,10 @@
 
 const mongoose = require ('mongoose');
 const app = require('./app');
-require("dotenv").config();
+require('dotenv').config();
 
 //hacemos lo de abajo para que capte el puerto del hosting, si no es este el caso, se conecte al puerto x000
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 1400
 const URL = process.env.MONGODB_URL;
 
 

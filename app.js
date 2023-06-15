@@ -40,25 +40,12 @@ app.use('/api',[
     orderRoutes,
     uploadRoutes,
     categoryRoutes,
-    
     /*
     viewsRoutes */
 ]);
 console.log("Rutas API configuradas correctamente.");
 
 module.exports = app;
-
-// routes
-app.get('/', (req, res) => {
-    res.send('welcome')
-})
-
-
-app.get('/products', (req, res) => {
-    res.send('products')
-})
-
-
 
 
 

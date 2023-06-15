@@ -14,8 +14,18 @@ const productSchema = new Schema({
         type: String,
         required: true,
     },
-    imageURL: {
+    image: {
         type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        enum:  [ 'Stock', 'Sin stock'],
+        default: 'Stock'
+    },
+    category: {
+        type: moongose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true,
     },
 })

@@ -39,7 +39,9 @@ async function createOrder (req, res) {
 
 const getOrders = async (req, res) => {
     try {
-        const orders = await Order.find()
+        const idUser = req.params.idUser; 
+        const orders = await Order.find({userId: idUser})
+        .populate('products.productId',{name:1,description:1,imageURL:1})
 
         res.status(200).json({
             success: true,
@@ -63,7 +65,14 @@ const getOrders = async (req, res) => {
 const getOrderById = async (req, res) => {
     try {
         const ordenId = req.params.id;
-        const order = await Order.findById(ordenId);
+        const order = await Order.findById(ordenId).populate('userId', {
+            name: 1,
+            email: 1
+        }).populate('products.productId', {
+            name:1,
+            description: 1,
+            imageURL: 1,
+        });
 
         if (!order) {
             return res.status(404).json({
@@ -73,7 +82,7 @@ const getOrderById = async (req, res) => {
         }
         res.status(200).json({
             success: true,
-            message: 'Orden no encontrada :(',
+            message: 'Orden encontrada :d',
             order,
         })
     } catch (error){

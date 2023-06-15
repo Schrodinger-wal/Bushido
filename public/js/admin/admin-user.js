@@ -1,17 +1,46 @@
-let users = JSON.parse(localStorage.getItem("users")) || [];
+const { response } = require("express");
 
-userForm = document.getElementById('form-user')
+let Users = [];
+
+const userForm = document.getElementById('form-user');
+const userBtn = document.getElementById('userBtn');
+let password1 = document.querySelector('password1');
+let password2 = document.querySelector('password2');
+/* /////////////////////////////////////////////// */
+const passForm = document.querySelectorAll('.password-form');
+const userform = document.getElementById('form-user');
+const submitBtn = document.querySelector('userBtn');
+const tableBody = document.getElementById('table-body');
+
+const URL = 'http:://localhost:1400/api';
+
 userForm.addEventListener('submit', () => {
     console.dir(userForm.dataset)
 })
 
-const userBtn = document.getElementById('userBtn')
-const tableBody = document.getElementById('table-body')
 
-let editIndex;
+async function cargarUsuarios() {
+    try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${URL}/users`, {
+        headers: {
+            Authorization: token
+        }
+    });
+
+    Users = response.data.user;
+    renderizarTabla(Users);
+
+    
+} catch (error) {
+    console.log(error)
+}
+}
+
+cargarUsuarios();
 
 
-
+let editIndex = undefined;
 
 
 function renderizarTabla() {
@@ -22,7 +51,7 @@ function renderizarTabla() {
         /* con colspan ocupa todas las columnas que sean necesarias, en este caso 6 */
         return
     }
-    users.forEach((user, index) => {
+    users.forEach((user) => {
         const tableRow = 
         `
         <tr class="product">
@@ -33,13 +62,22 @@ function renderizarTabla() {
                                     ${user.email}    
                                 </td>
                                 <td class= "product__price">
+                                ${user.date}
+                                </td>
+                                <td class= "product__price">
+                                ${user.country}
+                                </td>
+                                <td class= "product__price">
+                                ${user.gender}
+                                </td>
+                                <td class= "product__price">
                                     ${user.role}
                                 </td>
                                 <td class= "product__actions">
-                                    <button class="product__action-btn" onclick="deleteUser(${index})"> 
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                    <button class="product__action-btn btn-edit" onclick="editUser(${index})">
+                                <button class="product__action-btn" onclick="deleteUser(${user._id})"> 
+                                <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                    <button class="product__action-btn btn-edit" onclick="editUser(${user._id})">
                                         <i class="fa-solid fa-pencil"></i>
                                     </button>
                                 </td>
@@ -54,7 +92,7 @@ renderizarTabla();
 
 /* ==================================== ADD =================== */
 
-function addUser(evt) {
+async function addUser(evt) {
     evt.preventDefault();
 
     console.dir(evt.target);
@@ -66,29 +104,49 @@ function addUser(evt) {
     const newUser = {
         name: elements.name.value,
         email: elements.email.value,
+        password: elements.password1.value,
+        age: elements.age.value,
+        country: elements.country.value,
+        gender: elements.gender.value,
         role: elements.role.value,
     };
-    const newFormData = new FormData(evt.target);
-    const newuserFormData = Object.fromEntries(newFormData);
+    const token = localStorage.getItem('token');
+
+/*     const newFormData = new FormData(evt.target);
+    const newuserFormData = Object.fromEntries(newFormData); */
 
     console.log(newUser);
 
-    if(editIndex >= 0) {
-        users[editIndex] = newUser
-        showAlert(`El usuario se edito correctamente`)
-        return
+    if(editIndex) {
+        const response = await axios.put(`${URL}/users/${editIndex}`, newUser, {
+            headers: {
+                Authorization: token,
+            }
+        })
+        if (!response) 
+            showAlert(`No se pudo modificar el user`, 'warning' )
+        else {
+            showAlert(`El usuario se edito correctamente`, 'sucess')
+            passForm.forEach((form) => {
+                form.style.display = 'block';
+            })
+            password1.required = true;
+            password2.required = true;
+        }
     } else {
-        users.push(newUser)
-        showAlert(`El usuario se agrego correctamente`)
+        const response = await axios.post(`${URL}/users`, newUser);
+        if (!response) 
+            showAlert('No se pudo agregar el usuario', 'warning')
+        else 
+            showAlert('Se ha agregado al usuario', 'sucess')
+        
     }
 
-    localStorage.setItem("users", JSON.stringify(users))
+
     editIndex = undefined
 
     userBtn.classList.remove('edit-btn')
     userBtn.innerText = 'Cargar usuario'
-
-    console.log(users)
 
     renderizarTabla()
 

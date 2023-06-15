@@ -12,7 +12,8 @@ const orderSchema = new Schema ({
         type: [
             {
                 productId: {
-                    type: mongoose.Schema.Types.ObjectId, 
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product', 
                     required: true,
                 },
                 quantity: {
@@ -35,7 +36,13 @@ const orderSchema = new Schema ({
     createAt: {
         type: Date,
         default: Date.now,
+    },
+    status: {
+        type: String,
+        enum:  [ 'Procesado', 'En progreso', 'Listo'],
+        default: 'Precesado'
     }
+
 });
 
 module.exports = mongoose.model('order', orderSchema);

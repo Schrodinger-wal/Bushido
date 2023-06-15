@@ -5,9 +5,12 @@ const { findByIdAndUpdate } = require('../schemas/user.schema');
 // Post product
 
 async function addProduct (req, res) {
-    console.log('juegan los products')
+    console.log('products')
+    console.log(req.file);
+    console.log(req.image);
     try {
         const newProduct = new product(req.body);
+        product.image = req.body.image;
         await newProduct.save();
 
         return res.status(200).send ({
@@ -28,13 +31,23 @@ async function addProduct (req, res) {
 // Obetener los productos
 
 async function getProduct (req, res) {
-    console.log('la call rey')
+    console.log('la call')
+    const limit = 9
+
+    const itemsToSkip = limit * (req.query.skip - 1)
+    const productos = await product.find().limit(limit).skip(itemsToSkip)
+    
+
+    const total = await product.countDocuments();
+    
     try {
         const Products = await product.find({});
         return res.status(200).send({
             ok:true,
             msg: `Productos obtenidos correctamente :DD`,
             Products,
+            productos,
+            total
         })
     }
     catch (error) {
@@ -67,11 +80,7 @@ async function getProductById (req, res) {
     }
 }
 
-// Actualizar un producto
 
-async function updateProduct (req, res) {
-
-}
 
 // Borrar un producto
 
@@ -97,15 +106,15 @@ async function deleteProduct (req, res) {
     }) 
 }
 
-// Upload
 
-async function uploadProduct (req, res) {
+// Actualizar un producto
+
+async function updateProduct (req, res) {
     try {
         const id = req.query.id;
         const data = req.body;
 
-        const newProduct = await product;
-        findByIdAndUpdate(id, data, {new: true})
+        const newProduct = await product.findByIdAndUpdate(id, data, {new: true})
 
         if(!newProduct) {
             return res.status(404).send({
@@ -133,6 +142,5 @@ module.exports = {
     getProduct,
     getProductById,
     updateProduct,
-    uploadProduct,
     deleteProduct,
 }

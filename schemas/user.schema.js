@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
         max: 110,
         required: true,
     },
+    country: {
+        type: String,
+        required:true,
+    },
     gender: {
         type: String,
         required: true,

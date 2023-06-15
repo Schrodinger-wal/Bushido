@@ -8,8 +8,10 @@ const path = require('path');
 const userRoutes = require ('./routes/user.routes');
 const productRoutes = require ('./routes/product.routes');
 const orderRoutes = require ('./routes/order.routes');
-/* 
 const uploadRoutes = require ('./routes/upload.routes');
+const categoryRoutes = require ('./routes/category.routes') 
+/* 
+
 
 const viewsRoutes = require ('./routes/views.routes');
  */
@@ -36,8 +38,10 @@ app.use('/api',[
     userRoutes,
     productRoutes,
     orderRoutes,
-    /*  
     uploadRoutes,
+    categoryRoutes,
+    
+    /*
     viewsRoutes */
 ]);
 console.log("Rutas API configuradas correctamente.");

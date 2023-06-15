@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>order</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <title>Detalles del producto</title>
+    <link rel="stylesheet" href="/public/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -15,7 +15,6 @@
                 <a  href="/index.html" class="navbar__nav-link" >
                     <img class="navbar__logo" src="/Assets/bushido.png" alt="Logo bushido" >
                 </a>
-                
                 <h1 class="header__h1-title">BUSHIDO</h1>
 
                 <div class="user-navbar">
@@ -26,12 +25,7 @@
                             <i class="fas fa-search icon"></i>
                     </button>
                     <div class="user-navbar__cart-icon-container">
-
-                        <a style="text-decoration: none;" href="/pages/order/order.html">
                         <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                        <div id="cart-count" class="user-navbar__cart-badge">0</div>
-
                     </div>
                     <a href="/pages/login/login.html">
                     <div class="user-navbar__user-avatar-container">
@@ -51,7 +45,7 @@
 
 
 
-                <ul class="navbar__nav-links-container" id="navbar-list">
+                <ul class="navbar__nav-links-container">
                     <li class="navbar__nav-item">
                         <a href="/index.html" class="navbar__nav-link">Inicio</a>
                     </li>
@@ -71,33 +65,22 @@
 
         </nav>
     </header>
-
-
-
-
-<section>
-    <h1>Mi carrito</h1>
+        <!-- ============================= Termina Navbar ================================= -->
         
-        <div class="order__container">
-            <table class="admin-product__table">
-                <thead>
-                    <tr class="admin-product__td">
-                        <td class="admin-product__td">Imagen</td>
-                        <td class="admin-product__td">Producto</td>
-                        <td class="admin-product__td">Precio</td>
-                        <td class="admin-product__td">Cantidad</td>
-                        <td class="admin-product__td">Acciones</td>
-                    </tr>
-                </thead>
-                    <tbody id="tbody"></tbody>
-            </table> 
-        </div>
-</section>
+
+    <h1 class="register__subtitle--h2">Detalles del producto</h1>
+    
+
+
+<section id="product-detail"></section>
 
 
 
 
-<!-- ========================== Inicio Footer =============================== -->
+
+
+
+    <!-- ========================== Inicio Footer =============================== -->
 
 <div class="whatsapp-container">
     <a href="https://walink.co/798a19" class="whatsapp-container__link">
@@ -161,8 +144,9 @@
 <!-- ========================== Final Footer =============================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+    <script src="/js/products/product.detail.js"></script>
     <script src="/js/funcionality/alert.js"></script>
     <script src="/js/products/order.js"></script>
-    <script src="/js/funcionality/header.js"></script>
+
 </body>
 </html>

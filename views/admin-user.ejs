@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head', {tabTitle: 'Admin-users'}) %>
+
+<body>
+
+<!-- =========Inicio navbar================== -->
+
+    <%- include('partials/header') %>
+
+<!-- ===============Fin de navbar=============-->
+
+
+    <main>
+        <h1 class="register__subtitle--h2">
+            Administrador de usuarios
+        </h1>
+
+        <div class="admin-product__div--product">
+            <form class="admin-product__form" id="form-user" onsubmit="addUser(event)">
+                <div class="admin-product__div--product">
+                    <label class="admin-product__label" for="userName">Usuario</label>
+                    <input class="admin-product__input" name="name" id="userName" type="text" required>
+                </div>
+
+                <div class="admin-product__div--product">
+                    <label  class="admin-product__label" for="emailUser">Email</label>
+                    <input class="admin-product__input" name="email" id="emailUser" type="email" required>
+                </div>
+                
+
+                <div class="admin-product__div--product">
+                    <label for="userRole" class="admin-product__label" 
+                    >Rol</label>
+                    <select class="admin-product__input" name="role" id="userRole">
+                        <option value="" selected></option>
+                        <option value="cliente">Cliente</option>
+                        <option value="admin">El admin</option>
+                    </select>
+                </div>
+
+                <div class="admin-product__div--product password-form">
+                    <label class="admin-product__label" for="password1">Contraseña</label><br>
+                    <input type="password" name="password1" class="admin-product__input" id="password1"  
+                    required>
+                </div>
+                <div class="admin-product__div--product password-form">
+                    <label class="admin-product__label" for="password2" >Repetir Contraseña</label><br>
+                    <input type="password" class="admin-product__input" name="password2" id="password2"  
+                    
+                    required>
+                </div> 
+                
+                <button type="submit" class="admin-product__btn" id="userBtn"> Cargar </button>
+            </form>
+
+
+    <div class="admin-product__table-div">
+        <table class="admin-product__table">
+            <thead>
+                <tr>
+                    <td class="admin-product__td">Usuario</td>
+                    <td class="admin-product__td">Email</td>
+                    <td class="admin-product__td">Rol</td>
+                    <td class="admin-product__td">Gender</td>
+                    <td class="admin-product__td">Country</td>
+                    <td class="admin-product__td">Creado</td>
+                    <td class="admin-product__td">Acciones</td>
+                </tr>
+            </thead>
+        <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+
+
+
+<!-- ========================== Inicio Footer =============================== -->
+
+    <%- include('partials/footer') %>
+
+    <!-- ========================== Fin Footer =============================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+    <script src="/js/admin/is.admin.js"></script>
+    <script src="/js/funcionality/alert.js"></script>
+    <script src="/js/admin/admin-user.js"></script>
+    <script src="/js/funcionality/header.js"></script>
+
+</main>
+
+
+</body>
+</html>

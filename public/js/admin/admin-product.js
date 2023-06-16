@@ -1,36 +1,68 @@
-let Products = JSON.parse(localStorage.getItem("Products")) || [];
+let Products = [];
+const token = localStorage.getItem('token')
+
+const URL = 'http://localhost:1400/api';
+let selectCategoryHTML = document.getElementById('category');
+
 
 const productForm = document.getElementById('form-product');
 const submitbtn = document.getElementById('btnProduct');
 const tableBody = document.getElementById('tableBody')
 
-productForm.addEventListener ('click', () => {
-    console.dir(productForm.dataset)
-})
-
 
 /* ===============================TABLA================================== */
 
+async function cargarCategorias(){
+    try {
+        
+        const response = await axios.get(`${URL}/category`)
+        const categories = response.data.categories
+        selectCategoryHTML.innerHTML = '<option value="" selected></option>';
+        categories.forEach((cat)=> {
+            selectCategoryHTML.innerHTML += `<option value="${cat._id}">${cat.name}</option>` 
+            console.log(response.data.categories);
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+cargarCategorias()
+
+
+async function cargarProductos() {
+    try {
+        const respuesta = await axios.get(`${URL}/products`)
+        
+        console.log(respuesta.data.Products)
+
+        Products = respuesta.data.productos
+        renderizarTabla(Products)
+    } catch (Error) {
+        console.warn(error)
+    }
+}
+
+cargarProductos();
+
 let editIndex;
 
-function renderizarTabla () {
+function renderizarTabla (Products) {
     tableBody.innerHTML = "";
 
     if(Products.length === 0) {
         tableBody.innerHTML = `<tr> <td colspan= "6">No se 
         encontraron productos</td> </tr>`
-
-        return
+        return;
     }
-    Products.forEach((producto, index) => {
+    Products.forEach((producto) => {
         
-        let imageSrc = producto.image ? producto.image : '/assets/page-notifier/not-found.png'
-        // la imagen va a ser encontrada por este let
-
+        let imageSrc = producto.image ? `${URL}//products/upload/image/${producto.image}` : '/assets/pages-notifier/not-found.png';
         const tableRow = 
     `<tr class="product">
         <td class="product__img-cell">
-            <img class= "product__img" src="${imageSrc}" width="120px" alt="${producto.name}">                    
+            <img class= "product__img" 
+            src="${imageSrc}">                    
         </td>
         <td class= "product__name">
             ${producto.name}
@@ -42,10 +74,10 @@ function renderizarTabla () {
             $ ${producto.price}
         </td>
         <td class= "product__actions">
-            <button class="product__action-btn" onclick="deleteProduct(${index})"> 
+            <button class="product__action-btn" onclick="deleteProduct(${producto._id})"> 
                 <i class="fa-solid fa-trash-can"></i>
             </button>
-            <button class="product__action-btn btn-edit" onclick="editProduct(${index})">
+            <button class="product__action-btn btn-edit" onclick="editProduct(${producto._id})">
                 <i class="fa-solid fa-pencil"></i>
             </button>
         </td>
@@ -55,14 +87,18 @@ function renderizarTabla () {
 }
 
 renderizarTabla();
-
+cargarProductos();
 
 function addProduct(evt) {
+    try {
+        
+    
     evt.preventDefault();
     console.dir(evt.target);
     console.log(evt.target);
 
     const elements = evt.target.elements
+    const formFile = new FormData(evt.target)
 
     /* 
     |
@@ -73,13 +109,14 @@ function addProduct(evt) {
 
 
 
-const newProduct = {
+const updateProduct = {
     name: elements.name.value,
     description: elements.description.value,
     price: elements.price.valueAsNumber,
     image: elements.image.value,
-    
 };
+console.log(updateProduct)
+if(editIndex) {}
     const newFormData = new FormData(evt.target);
     const newProductFormData = Object.fromEntries(newFormData);
 
@@ -109,6 +146,9 @@ const newProduct = {
 
     evt.target.reset()
     elements.name.focus()
+} catch (error) {
+        
+}
 }
 
 

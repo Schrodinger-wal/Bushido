@@ -6,10 +6,10 @@ const isAdmin = require('../middlewares/isAdmin')
 //create User
 
 // Crear un usuario
-router.post ('/users',[jwtVerify, isAdmin], userController.createUser);
+router.post ('/users'/* ,[jwtVerify, isAdmin] */, userController.createUser);
 
 // Obtener todos los usuarios
-router.get('/users', jwtVerify, userController.getUsers);
+router.get('/users'/* , jwtVerify */, userController.getUsers);
 
 // Obtener un usuario especifico
 router.get('/users/:id', userController.getUserById);
@@ -18,10 +18,10 @@ router.get('/users/:id', userController.getUserById);
 router.put('/users/:id', userController.updateUser);
 
 // Eliminar un usuario
-router.delete('/users/:id', [jwtVerify, isAdmin],userController.deleteUser);
+router.delete('/users/:id'/* , [jwtVerify, isAdmin] */,userController.deleteUser);
 
 //Actualizar Password
-router.put("/users/:id/password",jwtVerify,userController.updatePassword);
+router.put("/users/:id/password"/* ,jwtVerify */,userController.updatePassword);
 
 //login
 router.post("/login",userController.login);

@@ -59,6 +59,10 @@ a {
 .card__header {
   height: 300px;
   width: 200px;
+  -o-transition: all 400ms ease-out;
+  -webkit-transition: all 400ms ease-out;
+  -moz-transition: all 400ms ease-out;
+  -ms-transition: all 400ms ease-out;
   transition: all 400ms ease-out;
 }
 .card__img {
@@ -145,6 +149,18 @@ a {
 .alert-dialog.show {
   visibility: visible;
   opacity: 1;
+}
+.alert-dialog__sucess {
+  background-color: rgba(0, 214, 82, 0.795);
+}
+.alert-dialog__advertencia {
+  background-color: rgba(250, 235, 25, 0.795);
+}
+.alert-dialog__warning {
+  background-color: rgba(148, 60, 60, 0.795);
+}
+.alert-dialog__info {
+  background-color: rgba(150, 200, 223, 0.795);
 }
 
 .alert-dialog.error {
@@ -241,7 +257,13 @@ a {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
   -o-transform: translateY(-1%);
   -o-transition: all 800ms ease-out;
+  -webkit-transform: translateY(-1%);
+  -moz-transform: translateY(-1%);
+  -ms-transform: translateY(-1%);
   transform: translateY(-1%);
+  -webkit-transition: all 800ms ease-out;
+  -moz-transition: all 800ms ease-out;
+  -ms-transition: all 800ms ease-out;
   transition: all 800ms ease-out;
 }
 .navbar__nav-links-container {
@@ -507,7 +529,7 @@ a {
 .body__register {
   font-size: 16px;
   background: rgb(10, 16, 37);
-  background-image: url(/Assets/background-title.png);
+  background-image: url(/Assets/banners/African-titulo.png);
   font-family: Helvetica, "Roboto", Arial, sans-serif;
   font-size: 1rem;
 }
@@ -634,8 +656,12 @@ a {
   margin-top: 30px;
   margin-left: 10px;
   margin-bottom: 20px;
-  background-image: url(/Assets/African-titulo.png);
+  background-image: url(/Assets/banners/African-titulo.png);
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  -o-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
   border-radius: 20px;
   color: #ffffff;
   transition: all 4s ease-in-out;
@@ -682,7 +708,7 @@ a {
 
 .contact-form__container {
   width: 1000px;
-  background-image: url(/Assets/African-titulo.png);
+  background-image: url(/Assets/banners/African-titulo.png);
   padding: 30px;
   margin-top: 20px;
   color: white;
@@ -715,7 +741,7 @@ a {
 }
 /* ======================================================== */
 .about-us__container-title {
-  background-image: url(/Assets/African-titulo.png);
+  background-image: url(/Assets/banners/African-titulo.png);
   margin-bottom: 25px;
   padding: 15px;
 }
@@ -723,7 +749,7 @@ a {
 .about-us__section {
   width: 100%;
   padding: 10px;
-  background-image: url(/Assets/African-titulo.png);
+  background-image: url(/Assets/banners/African-titulo.png);
 }
 
 .about-us__text-welcome {
@@ -767,8 +793,7 @@ a {
 .about-us__img-p {
   width: 70%;
   max-height: 200px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   transition: all 400ms ease-out;
 }
 
@@ -832,8 +857,7 @@ a {
 .about-us--card .about-us--card__image {
   width: 250px !important;
   max-height: 300px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .about-us--card .about-us--card__body {
   padding: 20px;
@@ -1034,7 +1058,6 @@ a {
 @media (max-width: 768px) {
   .product {
     display: flex;
-    flex-wrap: wrap;
   }
   .product td {
     flex: 0 0 100%;
@@ -1134,9 +1157,121 @@ a {
   background-color: #6a0000; /* Color bordó más oscuro al pasar el cursor */
 }
 
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.product-detail__image-container {
+  margin-bottom: 20px;
+}
+
+.product-detail__image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.product-detail__info {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.product-detail__title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-detail__description {
+  margin-bottom: 10px;
+}
+
+.product-detail__price {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-detail__rating {
+  margin-bottom: 10px;
+}
+
+.product-detail__rating-stars {
+  color: gold;
+}
+
+.product-detail__rating-value {
+  margin-left: 5px;
+}
+
+.product-detail__add-to-cart {
+  padding: 10px 20px;
+  background-color: #af1400;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.product-detail__footer {
+  background-color: #333;
+  padding: 20px;
+}
+
+.product-detail__cant-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  margin-top: 20px;
+}
+
+.product-detail__cant {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.product-detail__cant-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.product-detail__cant-buttons button {
+  background-color: #ff5500;
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.product-detail__cant-buttons button:hover {
+  background-color: #ff4400;
+}
+
+.product-detail__input-Cant {
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .product-detail__info {
+    text-align: left;
+  }
+}
 body {
   font-family: Helvetica, "Roboto", Arial, sans-serif;
-  background-image: url(/Assets/background-title-alt.png);
+  background-image: url(/Assets/banners/background-title-alt.png);
 }
 
 ::-webkit-placeholder {

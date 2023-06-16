@@ -17,6 +17,19 @@
         visibility: visible;
         opacity: 1;
     }
+    &__sucess {
+        background-color: rgba(0, 214, 82, 0.795);
+    }
+    &__warning {
+        background-color: rgba(250, 235, 25, 0.795);
+    }
+    &__error {
+        background-color: rgba(148, 60, 60, 0.795);
+    }
+    &__info {
+        background-color: rgba(150, 200, 223, 0.795);
+    }
+
 }
 
 

@@ -7,7 +7,8 @@ function renderHeaderLinks() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(currentUser) {
-    signIn.innerHTML = `<div onclick="logout()" class="navbar__nav-link">Logout</div>`
+        signIn.innerHTML = `<div onclick='logout()' " href="/login" style="cursor: pointer;" class="navbar__nav-link">Logout</div>`
+
 
 
     if (currentUser.role === 'ADMIN_ROLE') {
@@ -28,6 +29,7 @@ else {
     const link = createLinkElement('login', 'Login') // le estariamos mandando el path y el text a la funcion
     signIn.replaceChildren(link);
 
+    signIn.innerHTML = `<a href="/login" id="sign-in" class="navbar__nav-link">Login</a>`
     }
 }
 
@@ -52,7 +54,7 @@ function createListItemElement(path, text) {
 function createLinkElement (path, text) {
     const link = document.createElement('a'); /* creamos el link */
     link.classList.add('navbar__nav-link'); // le ponemos el estilo con la class
-    link.href = `/pages/${path}/${path}.html`; // le damos una pagina en especifica a buscar
+    link.href = `${path}`; // le damos una pagina en especifica a buscar
     link.innerText = text; //escribe el texto que aparecera en el boton
 
     return link; // nos da el zelda 
@@ -66,10 +68,14 @@ function logout() {
     if(currentUser.role === 'ADMIN_ROLE') {
     document.getElementById('admin-product').remove();
     document.getElementById('admin-user').remove()
+
+    setTimeout(()=>{
+        window.location.href="/"
+    }, 800)
     }
 
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('order')
+    localStorage.removeItem('token')
 
     renderHeaderLinks();
 }

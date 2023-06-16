@@ -37,11 +37,11 @@ const userSchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        required:true,
+        required: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     image: {
         type: String,

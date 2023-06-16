@@ -5,12 +5,12 @@ let badge = document.getElementById('cart-count');
 let input = document.getElementById("order__input-cantidad${id}");
 
 function contador() {
+    order = JSON.parse(sessionStorage.getItem('order')) || [];
     let cantidad = 0;
-    order.forEach((order) => {
-        cantidad += order.cantidad; 
-    });
-    badge.innerHTML = cantidad;
-    console.log('la cantidad total es de:', cantidad` productos`)
+    Order.forEach((prod) => {
+        cantidad += prod.cant; 
+    })
+    badgeHTML.innerText = cantidad;
 }
 
 contador();
@@ -76,15 +76,20 @@ const tableRow =
 
 
     function AumentarProducto() {
-        input.value = valorActual + 1;
-        valorActual = parseInt(input.value);
+        var input = document.getElementById(`order__input-cantidad${id}`)
+        var value = parseInt(input.value, 10);
+        input.value = isNaN(value) ? 1 : value + 1;
+        updateTotal(id);
     }
 
     function DisminuirProducto() {
-        if (valorActual > 1) {
-            input.value = Math.max(parseInt(input.value, 10) - 1, 1);
-            cantTotal(id);
+        var input = document.getElementById(`order__input-cantidad${id}`)
+        var value = parseInt(input.value, 10);
+        input.value = isNaN(value) ? 1 : value - 1;
+        if (input.value < 1) {
+        input.value = 1;
         }
+        updateTotal(id)
     }
 
     function cantTotal(id) {

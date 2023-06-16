@@ -10,38 +10,29 @@ const productRoutes = require ('./routes/product.routes');
 const orderRoutes = require ('./routes/order.routes');
 const uploadRoutes = require ('./routes/upload.routes');
 const categoryRoutes = require ('./routes/category.routes') 
-/* 
-
-
 const viewsRoutes = require ('./routes/views.routes');
- */
+
 
 //cargar configuracion de plantillas express
 app.set('view engine', 'ejs');
-
-app.use(cors());
-
-
 app.use(express.static("public"));
-console.log("Middleware de archivos estáticos configurado correctamente.");
-
+app.use(cors());
 
 
 // middleware
 app.use(express.json());
 console.log("Middleware de análisis JSON configurado correctamente.");
+console.log("Middleware de archivos estáticos configurado correctamente.");
 
 app.use(express.urlencoded({extended: true}))
 
-
+app.use('/', viewsRoutes)
 app.use('/api',[
     userRoutes,
     productRoutes,
     orderRoutes,
     uploadRoutes,
     categoryRoutes,
-    /*
-    viewsRoutes */
 ]);
 console.log("Rutas API configuradas correctamente.");
 

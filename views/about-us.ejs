@@ -1,69 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About-us</title>
-    <link rel="stylesheet" href="/public/css/main.css">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <header class="header__index">
-        <nav class="navbar">
-                <a  href="/index.html" class="navbar__nav-link" >
-                    <img class="navbar__logo" src="/Assets/bushido.png" alt="Logo bushido" >
-                </a>
-                <h1 class="header__h1-title">BUSHIDO</h1>
-
-                <div class="user-navbar">
-                    <button class="product-search__btn-header">
-                        <div class="buscar">
-                            <input type="text" placeholder="Buscar" required />
-                            <div class="navbar-btn">
-                            <i class="fas fa-search icon"></i>
-                    </button>
-                    <div class="user-navbar__cart-icon-container">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </div>
-                    <a href="/pages/login/login.html">
-                    <div class="user-navbar__user-avatar-container">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/100px-Default_pfp.svg.png" class="user-navbar__user-avatar" alt="Imagen de usuario">
-                    </div>
-                    </a>
-                    
-            <!-- TODO: avatar de la persona logueada o nombre -->
-                </div>
-
-                
-                <input type="checkbox" class="navbar__menu-btn" id="menu-btn" title="Menu">
-                <label for="menu-btn"  class="navbar__menu-label">
-                    <span class="navbar__menu-icon"></span>
-                </label>
-                
+    <%- include('partials/head', {tabTitle: 'Sobre nosotros'}) %>
 
 
-
-                <ul class="navbar__nav-links-container">
-                    <li class="navbar__nav-item">
-                        <a href="/index.html" class="navbar__nav-link">Inicio</a>
-                    </li>
-                    <li class="navbar__nav-item">
-                        <a href="/pages/contact/contact.html" class="navbar__nav-link">Contacto</a>
-                    </li>
-                    <li class="navbar__nav-item">
-                        <a href="/pages/about-us/about-us.html" class="navbar__nav-link">Nosotros</a>
-                    </li>
-                    <li class="navbar__nav-item">
-                        <a href="/pages/register/register.html" class="navbar__nav-link">Registrarse</a>
-                    </li>
-                    <li class="navbar__nav-item" id="navbar__sign-in">
-                        <a href="/pages/login/login.html" class="navbar__nav-link">Login</a>
-                    </li>
-                </ul>
-
-        </nav>
-    </header>
-        <!-- ============================= Termina Navbar ================================= -->
+<!-- ====================== Empieza Navbar ============================ -->
+    <%- include('partials/header') %>
+<!-- ======================= Termina Navbar ======================== -->
 
 
 <div class="about-us__container-title">
@@ -191,69 +133,9 @@
 
 <!-- ========================== Inicio Footer =============================== -->
 
-<div class="whatsapp-container">
-    <a href="https://walink.co/798a19" class="whatsapp-container__link">
-        <i class="fa-brands fa-whatsapp"></i>
-        
-    </a>
-</div>
-
-<footer class="footer">
-<div class="footer__column-media">
-    <ul class="footer__contact-container">
-        <li class="footer__contact-item"> 
-            <a href="www.facebook.com/" class="footer__contact-link">
-                <i class="fa-brands fa-facebook footer__contact-icon--facebook"></i>
-            Facebook
-            </a>
-        </li>
-        <li class="footer__contact-item">
-            <a href="https://walink.co/01f881" class="footer__contact-link">
-                <i class="fa-brands fa-instagram footer__contact-icon--instagram"></i>
-            Instagram
-            </a>
-        </li>
-        <li class="footer__contact-item">
-            <a href="www.linkedin.com/in/walter-mayer" class="footer__contact-link">
-                <i class="fa-brands fa-linkedin footer__contact-icon--linkedin"></i>
-            Linkedin
-            </a>
-        </li>
-    </ul>
-</div>
-<div class="footer__column-bushido">
-    <!-- <img src="/Assets/bushido.png" alt="Company Logo" class="footer__logo" width="50" style=""> -->
-    <h2 class="footer__company-name">BUSHIDO</h2>
-    <p class="footer__copyrigth">Todos los derechos reservados a Bushido®</p>
-</div>
-<div class="footer__column">
-    <ul class="footer__contact-container">
-        <li class="footer__contact-item">
-            <a href="#" class="footer__contact-link">
-                <i class="fa-solid fa-square-phone-flip footer__contact-icon"></i>
-                <p>(+54)011-4406-7352 </p>
-            </a>
-        </li>
-        <li class="footer__contact-item">
-            <a href="#" class="footer__contact-link">
-                <i class="fa-solid fa-location-dot footer__contact-icon"></i>
-                <p>Ramos Mejia (Bs.As)</p>
-            </a>
-        </li>
-        <li class="footer__contact-item">
-            <a href="#" class="footer__contact-link">
-                <i class="fa-solid fa-envelope footer__contact-icon"></i>
-                <p class="footer__contact-mail"" >Waltermayer@outlook.es</p>
-            </a>
-        </li>
-    </ul>
-</div>
-</footer>
-
-
-<script src="/js/funcionality/header.js"></script>
-
+<%- include('partials/footer') %>
 
 <!-- ========================== Final Footer =============================== -->
+<script src="/js/funcionality/header.js"></script>
 </body>
 </html>

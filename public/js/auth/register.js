@@ -1,49 +1,37 @@
 const registerForm = document.querySelector('#registerForm');
 const registerBtn = document.getElementById ('registerSubmit');
+const URL = 'http://localhost:1400/api';
 
-registerForm.addEventListener ("submit", (event) => {
+registerForm.addEventListener ("submit", async (event) => {
 
-
-    console.log(event)
-
+try {
     event.preventDefault();
 
     const element = event.target.elements;
-
-    if (element.password1.value !== element.password2.value) {
-        console.warn(`El password no consigue`);
-        return;
-    } 
-
-    const users = JSON.parse(localStorage.getItem('users')) || [] ;
-    // si es null, es un array vacio [] para que no nos rompa el codigovich || [] = (o un array vacio)
-
-    const userEmailExist = users.some((usr) => usr.email === element.email.value);
-
-
-    if (userEmailExist) {
-        console.warn(`El correo electrónico ya existe`);
-        return;
-    }
-
-
     const user = {
         name: element.fullName.value,
         email: element.email.value,
         password: element.password1.value,
         age: element.age.valueAsNumber,
-        born: element.born.valueAsNumber,
+        date: element.born.valueAsNumber,
         genre: element.genre.value,
         country: element.country.value,
         role: 'USER_ROLE',
     }
 
-    users.push(user);
-    localStorage.setItem('users', JSON.stringify(users));
+    const response = await axios.post(`${URL}/users`, user)
+    Users = response.data.user; 
 
-    console.log(`Usuario agregado: ${JSON.stringify(user)}`);
+    console.log(`Usuario agregado`)
+    showAlert('El usuario se registro correctamente','sucess');
 
-    registerForm.reset();
+    setTimeout(() => {
+        window.location.href = "/login";
+    }, 1500)
+} catch (error) {
+    console.log(error)
+}
+        console.log(event)
 });
 
 //!!!!!!! INCORPORAR SWEET ALERT CUANDO EL MAIL YA EXISTE Y CUANDO EL USUSARIO ES CREADOVICH

@@ -61,7 +61,7 @@ async function getUsers(req, res) {
 async function getUserById(req, res) {
     const id = req.params.id;
 
-    if (req.user.role !== 'ADMIN_ROLE' && req.user.id !== id) {
+    if (req.user.role !== 'ADMIN_ROLE' && req.user._id !== id) {
         return res.status(400).json({
             msg: 'No posee los permisos requeridos ;)'
         });
@@ -152,7 +152,7 @@ async function login(req, res) {
         const passwordLogin = req.body.password;
 
     if (!emailLogin || !passwordLogin) {
-        return res.status(400).json({
+        return res.status(400).send({
             msg: 'Datos incompletos :3'
         });
     }
@@ -162,26 +162,28 @@ async function login(req, res) {
     });
 
     if (!user) {
-        return res.status(404).json({
+        return res.status(404).send({
             msg: 'Datos ingresados incorrectos'
         });
     }
+    let secret = process.env.JWT_SECRET;
+
     const result = await bcrypt.compare(passwordLogin, user.password);
     console.log('Resultado de la comparación de contraseñas:', result);
     if (!result) {
-        return res.status(404).json({
+        return res.status(404).send({
             msg: 'Datos ingresados incorrectos'
         })
     }
     user.password = undefined;
 
-    const secret = process.env.JWT_SECRET;
+
 
     //con jwt se puede ver el token 
     const token = jwt.sign(JSON.stringify(user), secret);
     console.log('Token generado :D', token);
 
-    return res.status(200).json({
+    return res.status(200).send({
         msg: 'Datos ingresados correctos!!! :DDD',
         user, 
         token,

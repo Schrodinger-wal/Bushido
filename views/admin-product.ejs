@@ -13,7 +13,11 @@
 
     <section class="admin-product__section-product">
 
-        <h1 class="register__subtitle--h2">Admin Product</h1>
+        <div class="admin__title-container">
+            <h1 class="section-cards__title">
+                Admin Product
+            </h1>
+        </div>
 
         <div class="admin-product__div--product">
             
@@ -30,10 +34,10 @@
 
                 <div class="admin-product__div--product">
                     <label class="admin-product__label" for="category">Categoria</label><br>
-                    <select name="category" id="category"  class="admin-product__input" required>
+                    <select name="category" id="category"  class="admin-product__input" onselect="" required>
                         <option value="" selected></option>
-                        <option value="buzo">Buzo</option>
-                        <option value="remera">Remera</option>        
+                        <option value="648b31b22804c44cbd3d95d0">Buzo</option>
+                        <option value="648b32042804c44cbd3d95d5">Remera</option>        
                     </select>
                 </div>
 
@@ -45,7 +49,7 @@
                 
                 <div class="admin-product__div--product">
                     <label class="admin-product__label" for="imageLabel">Imagen</label>
-                    <input class="admin-product__input" type="text" name="file" id="imageLabel" value="/Assets/page-notifier/not-found.png" required
+                    <input class="admin-product__input" type="file" name="image" id="imageLabel" value="/Assets/page-notifier/not-found.png" required
                     >
                 
                 </div>
@@ -84,7 +88,9 @@
     <%- include('partials/footer') %>
 
 <!-- ========================== Final Footer =============================== -->
-
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script src="/js/funcionality/URL.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
     <script src="/js/admin/admin-product.js"></script>
     <script src="/js/funcionality/alert.js"></script>

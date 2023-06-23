@@ -1,7 +1,6 @@
-let Products = [];
+let products = [];
 const token = localStorage.getItem('token')
 
-const URL = 'http://localhost:1400/api';
 let selectCategoryHTML = document.getElementById('category');
 
 
@@ -34,10 +33,10 @@ async function cargarProductos() {
     try {
         const respuesta = await axios.get(`${URL}/products`)
         
-        console.log(respuesta.data.Products)
+        console.log(respuesta.data.products)
 
-        Products = respuesta.data.productos
-        renderizarTabla(Products)
+        products = respuesta.data.productos
+        renderizarTabla(products)
     } catch (Error) {
         console.warn(error)
     }
@@ -47,17 +46,17 @@ cargarProductos();
 
 let editIndex;
 
-function renderizarTabla (Products) {
+function renderizarTabla(products) {
     tableBody.innerHTML = "";
 
-    if(Products.length === 0) {
+    if(products.length === 0) {
         tableBody.innerHTML = `<tr> <td colspan= "6">No se 
         encontraron productos</td> </tr>`
         return;
     }
-    Products.forEach((producto) => {
+    products.forEach((producto) => {
         
-        let imageSrc = producto.image ? `${URL}//products/upload/image/${producto.image}` : '/assets/pages-notifier/not-found.png';
+        let imageSrc = producto.image ? `${URL}/products/upload/image/${producto.image}` : '/assets/page-notifier/not-found.png';
         const tableRow = 
     `<tr class="product">
         <td class="product__img-cell">
@@ -86,104 +85,113 @@ function renderizarTabla (Products) {
     });
 }
 
-renderizarTabla();
-cargarProductos();
 
-function addProduct(evt) {
-    try {
-        
+
+    async function addProduct(evt) {
+        evt.preventDefault();
     
-    evt.preventDefault();
-    console.dir(evt.target);
-    console.log(evt.target);
-
-    const elements = evt.target.elements
-    const formFile = new FormData(evt.target)
-
-    /* 
-    |
-    |
-    |
-    V
-     */
-
-
-
-const updateProduct = {
-    name: elements.name.value,
-    description: elements.description.value,
-    price: elements.price.valueAsNumber,
-    image: elements.image.value,
-};
-console.log(updateProduct)
-if(editIndex) {}
-    const newFormData = new FormData(evt.target);
-    const newProductFormData = Object.fromEntries(newFormData);
-
-    newProductFormData.price = +newProductFormData.price;
-
-    console.log(newProduct)
-
-    if(editIndex >= 0) {
-        Products[editIndex] = newProduct;
-        showAlert(`El producto a sido editado satisfactoriamente` ,'sucess')
-        
-    } else {
-        Products.push(newProduct)
-        showAlert(`El producto ha sido agregado con exito`)
-/*         showAlert(`El producto se agrego!!`, 'sucess'); */
+        const elements = evt.target.elements;
+        const formFile = new FormData(evt.target);
+    
+        const newProduct = {
+        name: elements.name.value,
+        description: elements.description.value,
+        price: elements.price.value,
+        category: elements.category.value,
+        };
+    
+        const token = localStorage.getItem('token');
+    
+        try {
+        if (editIndex) {
+            const response = await axios.put(`${URL}/products/${editIndex}`, newProduct, {
+            headers: {
+                Authorization: token,
+            },
+            });
+    
+            if (response.data.success) {
+            showAlert('El producto se editó correctamente', 'success');
+            } else {
+            showAlert('No se pudo modificar el producto', 'warning');
+            }
+        } else {
+            const response = await axios.post(`${URL}/products`, newProduct, {
+            headers: {
+                Authorization: token,
+            },
+            });
+    
+            if (response.data.success) {
+            showAlert('El producto se ha agregado exitosamente', 'success');
+            } else {
+            showAlert('No se pudo agregar el producto', 'warning');
+            }
+        }
+    
+        editIndex = undefined;
+        productBtn.classList.remove('edit-btn');
+        productBtn.innerText = 'Cargar producto';
+        evt.target.reset();
+        elements.name.focus();
+    
+        cargarProductos();
+        limpiar();
+        } catch (error) {
+        showAlert('Ha ocurrido un error', 'error');
+        console.log(error);
+        console.log(error.response);
+        }
     }
-
-    localStorage.setItem("Products", JSON.stringify(Products))
-
-    editIndex = undefined
-
-    submitbtn.classList.remove('edit-btn');
-    submitbtn.innerText = 'Cargar producto'
-    console.log(Products)
-
-    renderizarTabla()
-
-    evt.target.reset()
-    elements.name.focus()
-} catch (error) {
+    
+    /* ===============================Reiniciar====================== */
+    
+    
+    function limpiar(){
+        const el = productForm.elements;
         
-}
-}
-
-
-
+        el.name.value = '';
+        el.description.value = '';
+        el.price.value = '';
+        el.category.value = '';
+    }
 
 
 /* ===========================DELETE=============================== */
 
+async function deleteProduct(id) {
+    const confirmation = await confirm(`¿Está seguro que desea eliminar este producto?`);
 
-function deleteProduct(id) {
-    const productName = Products[id].name;
-
-    if (confirm(`¿Esta seguro que desea eliminar este producto?`))
-    {
-    Products.splice(id, 1);
-
-    localStorage.setItem("Products", JSON.stringify(Products));
-
-    showAlert(`El producto "${productName}" ha sido borrado correctamente`)
-
-    renderizarTabla()
-    return
-    } else{
-        showAlert(`Error al borrar el user`, 'Error');
-        return;
+    if (confirmation === true) {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.delete(`${URL}/products/${id}`, /* {
+                headers: { Authorization: token }
+            } */);
+            Swal.fire(
+                'El producto ha sido borrado correctamente.',
+                'moviendonos a la pagina principal!!',
+                'success'
+            );
+            cargarUsuarios();
+        } catch (error) {
+            Swal.fire(
+                'Error al borrar el producto.',
+                'moviendonos a la pagina principal!!',
+                'error'
+            );
+            console.log(error);
+        }
+        renderizarTabla();
     }
 }
-
 /* ================================EDIT=========================== */
 
 function editProduct(id) {
     submitbtn.classList.add("edit-btn");
     submitbtn.innerText = "Modificar producto";
 
-    let product = Products[id];
+    let product = products[id];
     const el = productForm.elements;
     el.name.value = product.name;
     el.description.value = product.description;

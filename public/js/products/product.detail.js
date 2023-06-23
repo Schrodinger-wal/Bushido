@@ -1,23 +1,32 @@
-const user = JSON.parse(localStorage.getItem('currentUser'));
-const params = window.location.search
+const user = JSON.parse(localStorage.getItem("currentUser"));
+const params = window.location.search;
+const products = [];
 
-console.log(params)
+console.log(params);
 
-const paramsURL = new URLSearchParams(params)
-const paramsEntries = Object.fromEntries(paramsURL)
+const paramsURL = new URLSearchParams(params);
+const paramsEntries = Object.fromEntries(paramsURL);
 
-const indice = paramsEntries.id;
+const indice = params.split("id=")[1];
 
-const products = JSON.parse(localStorage.getItem('Products'));
-const product = products[indice];
 
-function renderizarProductos() {
-    const detail = document.getElementById('product-detail');
-    const product = products[indice];
+async function obtenerProducto() {
+    try {
+        const respuesta = await axios.get(`${URL}/products`)
+        const products = respuesta.data.products;
+        return products;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-detail.innerHTML = 
+async function renderizarProductos(id) {
+    try {
+        const respuesta = await axios.get(`${URL}/products/${id}`);
+        product = respuesta.data.product;
+        const detail = document.getElementById("product-detail");
 
-`
+        detail.innerHTML = `
 <section class="product-detail">
     <div class="product-detail__image-container">
         <img src="${product.image}" alt="Product Image${product.name}" class="product-detail__image">
@@ -45,73 +54,71 @@ detail.innerHTML =
 
 </div>
 </section>
-`
-
+`;
+    } catch (error) {
+        console.warm(error);
+    }
 }
 
-renderizarProductos();
+renderizarProductos(index);
 
 let input = document.getElementById("input-cant");
-    let valorActual = parseInt(input.value);
+let valorActual = parseInt(input.value);
 
-    function AumentarProducto() {
-        input.value = valorActual + 1;
+function AumentarProducto() {
+    input.value = valorActual + 1;
+    valorActual = parseInt(input.value);
+}
+
+function DisminuirProducto() {
+    if (valorActual > 1) {
+        input.value = valorActual - 1;
         valorActual = parseInt(input.value);
-    }
-
-    function DisminuirProducto() {
-        if (valorActual > 1) {
-            input.value = valorActual - 1;
-            valorActual = parseInt(input.value);
-        } // todo checkear los id
-    }
-
+    } // todo checkear los id
+}
 
 function addCart() {
-    const cant = document.getElementById('input-cant')
+    const cant = document.getElementById("input-cant");
     const newOrder = {
-        image: product.image,
+        id: product._id,
+        image: product.image ?
+            `${URL}/upload/product/${product.image}` :
+            "/assets/page-notifier/not-found.png",
         name: product.name,
         price: product.price,
-        cant: parseInt(cantProd.value),
-        total: parseInt(cantProd.value) * parseInt(product.price)
+        cant: parseInt(cant.value),
+        total: parseInt(cant.value) * parseInt(product.price),
         // buscamos la cantidad, luego esa cantidad es multiplicada por el valor del producto
-    }
-    
-    const prod = order.fid((prod) => {
-        if(prod.name === product.name){
+    };
+
+    const prod = Order.find((prod) => {
+        if (prod.name === product.name) {
             prod.cant = parseInt(prod.cant) + parseInt(cantProd.value);
             prod.total = prod.cant * parseInt(prod.price);
-            return prod;
+            return product;
         }
-    })
+    });
 
-    if(!prod) {
-        order.push(newOrder)
+    if (!prod) {
+        order.push(newOrder);
     }
+    localStorage.setItem("order", JSON.stringify(order));
+
+    contador();
+    Swal.fire("Bien!", "Has agregado corretamente el producto ;D", "success");
 }
 
-localStorage.setItem('order', JSON.stringify(order));
-
-contador();
-
-function addToOrder(){
-
-    const existe = Order.find((prod)=>{
-        if(product.name === product.name){
+function addToOrder() {
+    const existe = Order.find((prod) => {
+        if (product.name === product.name) {
             return prod;
         }
-    })
-    if(!existe)
-        addToOrder();
-    window.location.href = "/pages/order/order.html"
+    });
+    if (!existe) addToOrder();
+    window.location.href = "/pages/order/order.html";
 }
-
-
-
 
 // despues se hace todo con el back
-
 
 // hacer el cargado de imagen
 

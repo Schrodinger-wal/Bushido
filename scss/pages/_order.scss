@@ -1,0 +1,81 @@
+.order__container {
+    overflow-x: auto;
+}
+
+.admin-product__table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+.admin-product__td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.admin-product__td:first-child {
+    width: 120px;
+}
+
+.admin-product__td:nth-child(2) {
+    width: 30%;
+}
+
+.admin-product__td:nth-child(3),
+.admin-product__td:nth-child(4),
+.admin-product__td:nth-child(5) {
+    width: 15%;
+}
+
+.admin-product__td:last-child {
+    width: 20%;
+}
+
+.product__img {
+    max-width: 100px;
+    height: auto;
+}
+
+.product__name {
+    font-weight: bold;
+}
+
+.product__price {
+    text-align: right;
+}
+
+.order-cant-btn {
+    display: flex;
+    align-items: center;
+}
+
+.order-cant-btn__input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.product__action-btn {
+    padding: 5px 10px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.order__delete-btn {
+    background-color: #cc0000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.order__delete-btn i {
+    vertical-align: middle;
+}
+
+.order__delete-btn:focus {
+    outline: none;
+}

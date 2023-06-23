@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         min: 12,
         max: 110,
-        required: true,
+        required: false,
     },
     country: {
         type: String,
@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema({
     },
     image: {
         type: String,
+        required: false,
     },
     createdAt: {
         type: Date,

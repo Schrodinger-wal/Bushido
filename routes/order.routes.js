@@ -2,11 +2,11 @@ const express = require ("express");
 const router = express.Router();
 
 const orderController = require ('../controllers/order.controller')
-
+const verifyOrderAndCalculate = require ('../middlewares/orderVerify')
 
 // Subir una orden
 
-router.post ('/order', orderController.createOrder);
+router.post ('/order', verifyOrderAndCalculate, orderController.createOrder);
 
 // Obtener las ordenes
 

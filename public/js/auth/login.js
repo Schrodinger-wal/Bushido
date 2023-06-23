@@ -1,5 +1,4 @@
 const loginForm = document.getElementById('loginForm')
-const URL = 'http://localhost:1400/api'
 
 console.log(loginForm);
 console.log("Evento de envío del formulario agregado")
@@ -25,13 +24,22 @@ loginForm.addEventListener('submit',async (event) => {
     
         console.log(user)
 
-        showAlert('Login correcto, moviendonos a la pagina principal!!', 'sucess')
+        Swal.fire(
+            '¡Login correcto!',
+            '',
+            'success'
+        );
+
         setTimeout(() => {
             window.location.href = "/";
         }, 1500)
     } catch (error) {
         console.log(error)
         console.log(error.response)
-        showAlert('Login correcto, moviendonos a la pagina principal!!', 'warning') 
+        Swal.fire(
+            '¡Datos incorrectos!',
+            '',
+            'error'
+        );
     }
 });

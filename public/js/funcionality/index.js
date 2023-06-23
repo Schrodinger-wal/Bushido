@@ -1,19 +1,38 @@
+
+
+const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('currentUser'));
 const cardContainer = document.getElementById('card-container')
 const productsNew = JSON.parse(localStorage.getItem('Products')) || [];
+let Products = []
+
+async function cargarProductos(){
+    try {
+        const respuesta = await axios.get(`${URL}/products`)
+        products = respuesta.data.productos
+        renderizarProductos(products)
+        console.log(respuesta)
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+cargarProductos();
 
 
 function renderizarProductos(products) {
     cardContainer.innerHTML = ``;
 
-    products.forEach((product, index) => {
+    products.forEach((product) => {
 
         const card = document.createElement('article');
         card.classList.add('card');
 
+        let imageSrc = product.image /* ? product.image : '/assets/page-notifier/not-found.png' */
+
         card.innerHTML = `
                 <div class="card__header">
-                    <img src="${product.image}" alt="${product.name}" class="card__image">
+                    <img src="${imageSrc}" alt="${product.name}" class="card__img">
                 </div>
                 <div class="card__body">
                     <div class="card__title">
@@ -23,18 +42,18 @@ function renderizarProductos(products) {
                         ${product.description}"
                     </p>
                     <div class="card__price">
-$${product.price}
+                        ${product.price}
                     </div>
                 </div>
                 <div class="card__footer">
 
                     <div class="card__btn-container">
-                        <a class="card__btn" onclick="addtoOrder(${index})" ${user ? "" : "disabled"}> 
+                    <a class="card__btn" onclick="addToOrder(${product._id})" >
                             Agregar al carrito
                         </a> 
                     </div>
                     <div class="card__btn-container">
-                        <a href="/pages/product-detail/product-detail.html?id=${index}" class="card__btn">
+                        <a href="/product-detail?id=${product._id}" class="card__btn">
                             Detalle 
                         </a> 
                     </div>
@@ -45,36 +64,31 @@ $${product.price}
 }
 
 
-function addtoOrder(id) {
-    const product = productsNew[id];
-
-    const productName = Products[id].name
-
-    const newOrder = {
-        image: product.image,
-        name: product.name,
-        description: product.description,
-        cantidad: 1,
-        total: product.price
-    }
-
-    const prod = order.find((product) => {
-        if(prod.name === product.name) {
-            prod.cantidad = parseInt(prod.cantidad) + 1;
-            prod.total = prod.cantidad * parseInt(prod.price);
-            return prod;
+async function addToOrder(id) {
+    try {
+        const respuesta = await axios.get(`${URL}/products/${id}`);
+        const product = respuesta.data.product;
+        
+        if (!product) {
+            // Aquí puedes mostrar una alerta o realizar alguna acción si el producto no se encuentra
+            return;
         }
-    })
 
-    if(!prod) {
-        order.push(newOrder)
+        // Agregar el producto al carrito
+        const order = JSON.parse(localStorage.getItem('order')) || [];
+        order.push(product);
+        localStorage.setItem('order', JSON.stringify(order));
+
+        // Mostrar una alerta o realizar otra acción para confirmar que el producto se agregó al carrito
+        Swal.fire(
+            'Enhorabuena!',
+            'Producto agregado al carrito.',
+            'success'
+        );
+
+    } catch (error) {
+        console.log(error);
     }
-
-
-localStorage.setItem('order', JSON.stringify(order));
-showAlert(`El producto "${productName}" ha sido agregado`)
-
-countCant();
 }
 
 

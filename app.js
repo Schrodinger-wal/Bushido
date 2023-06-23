@@ -34,7 +34,7 @@ app.use('/api',[
     uploadRoutes,
     categoryRoutes,
 ]);
-console.log("Rutas API configuradas correctamente.");
+
 
 module.exports = app;
 

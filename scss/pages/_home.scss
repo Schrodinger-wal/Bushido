@@ -6,7 +6,6 @@
     */text-align: center;
     height: 210px;
     margin-top: 30px;
-    margin-left: 10px;
     margin-bottom: 20px;
     background-image: url(/Assets/banners/African-titulo.png);
     box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
@@ -16,7 +15,6 @@
     -ms-border-radius: 20px ;
     border-radius: 20px ;
     color: $color-bg-primary;
-        transition: all 4s ease-in-out;
 }
     &__header {
         text-align: center;

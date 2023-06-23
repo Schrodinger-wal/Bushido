@@ -32,7 +32,7 @@ async function addProduct (req, res) {
 
 async function getProduct (req, res) {
     console.log('la call')
-    const limit = 9
+    const limit = 15
 
     const itemsToSkip = limit * (req.query.skip - 1)
     const productos = await product.find().limit(limit).skip(itemsToSkip)

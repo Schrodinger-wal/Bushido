@@ -69,6 +69,10 @@ function logout() {
     document.getElementById('admin-product').remove();
     document.getElementById('admin-user').remove()
 
+    Swal.fire(
+        'moviendonos a la pagina principal!!',
+        'success'
+    );
     setTimeout(()=>{
         window.location.href="/"
     }, 800)

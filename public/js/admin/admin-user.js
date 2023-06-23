@@ -1,7 +1,8 @@
-let Users = [];
+let users = [];
 
 const userForm = document.getElementById('form-user');
 const userBtn = document.getElementById('userBtn');
+/* /////////////////////////////////////////////// */
 let password1 = document.getElementById('password1');
 let password2 = document.getElementById('password2');
 /* /////////////////////////////////////////////// */
@@ -9,45 +10,40 @@ const passForm = document.querySelectorAll('.password-form');
 const submitBtn = document.querySelector('userBtn');
 const tableBody = document.getElementById('table-body');
 
-const URL = 'http://localhost:1400/api';
-
-userForm.addEventListener('submit', () => {
-    console.dir(userForm.dataset)
-})
+let editIndex = undefined;
 
 
 async function cargarUsuarios() {
-    try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${URL}/users` , {
-        headers: {
-        Authorization: token
-        }
-    });
+try {
+  const respuesta =  await axios.get(`${URL}/users`)
+  users = respuesta.data.users
+  renderizarTabla(users)
   
-    Users = response.data.user;
-    renderizarTabla(Users);
-    } catch (error) {
-    console.log(error);
-    }
-  }
+} catch (error) {
+  console.log(error)
+}
 
-cargarUsuarios()
 
-let editIndex = undefined;
+}
 
-console.log(Users)
-function renderizarTabla(Users) {
+console.log(users)
+function renderizarTabla(users) {
     tableBody.innerHTML = "";
   
-    if (Users.length === 0) {
+    if (users.length === 0) {
       tableBody.innerHTML = `<tr class="disabled"> <td colspan="6">No se encontraron usuarios</td> </tr>`;
       return;
     }
-  
-    Users.forEach((user) => {
+
+    
+    users.forEach((user) => {
+      let imageSrc = user.image ? user.image : '/assets/page-notifier/not-found.png'
       const tableRow = `
         <tr class="product">
+          <td class="product__img-cell">
+            <img class= "product__img" 
+            src="${imageSrc}" alt:"${user.name}">                    
+          </td>
           <td class="product__name">
             ${user.name}
           </td>
@@ -55,16 +51,13 @@ function renderizarTabla(Users) {
             ${user.email}    
           </td>
           <td class="product__price">
-            ${formatDate(user.createdAt)}
-          </td>
-          <td class="product__price">
-            ${user.country || "-"}
-          </td>
-          <td class="product__price">
-            ${user.gender || "-"}
-          </td>
-          <td class="product__price">
             ${user.role}
+          </td>
+          <td class="product__price">
+          ${user.gender || "-"}
+          </td>
+          <td class="product__price">
+            ${formatDate(user.createdAt)}
           </td>
           <td class="product__actions">
             <button class="product__action-btn" onclick="deleteUser('${user._id}')"> 
@@ -112,66 +105,64 @@ if(dia < 10) {
 /* ==================================== ADD =================== */
 
 async function addUser(evt) {
-    evt.preventDefault();
+  evt.preventDefault();
 
-    console.dir(evt.target);
-    console.log(evt.target);
+  const elements = evt.target.elements;
 
-    const elements = evt.target.elements
+  const newUser = {
+      name: elements.name.value,
+      email: elements.email.value,
+      password: elements.password1.value,
+      role: elements.role.value,
+  };
 
+  const token = localStorage.getItem('token');
 
-    const newUser = {
-        name: elements.name.value,
-        email: elements.email.value,
-        password: elements.password1.value,
-/*         age: elements.age.value, */
-/*         country: elements.country.value, */
-/*         gender: elements.gender.value, */
-        role: elements.role.value,
-    };
-    const token = localStorage.getItem('token');
+  try {
+      if (editIndex) {
+          const response = await axios.put(`${URL}/users/${editIndex}`, newUser, {
+              headers: {
+                  Authorization: token,
+              },
+          });
 
-    console.log(newUser);
+          if (response.data.success) {
+              showAlert('El usuario se editó correctamente', 'success');
+              passForm.forEach((form) => {
+                  form.style.display = 'block';
+              });
+              password1.required = true;
+              password2.required = true;
+          } else {
+              showAlert('No se pudo modificar el usuario', 'warning');
+          }
+      } else {
+          const response = await axios.post(`${URL}/users`, newUser);
 
-    if(editIndex) {
-        const response = await axios.put(`${URL}/users/${editIndex}`, newUser, {
-            headers: {
-                Authorization: token,
-            }
-        })
-        if (!response) 
-            showAlert(`No se pudo modificar el user`, 'warning' )
-        else {
-            showAlert(`El usuario se edito correctamente`, 'sucess')
-            passForm.forEach((form) => {
-                form.style.display = 'block';
-            })
-            password1.required = true;
-            password2.required = true;
-        }
-    } else {
-        const response = await axios.post(`${URL}/users`, newUser);
-        if (!response) 
-            showAlert('No se pudo agregar el usuario', 'warning')
-        else 
-            showAlert('Se ha agregado al usuario', 'sucess')
-        
-    }
+          if (response.data.success) {
+            Swal.fire(
+              'Exito!',
+              'El usuario ha sido agregado.',
+              'success'
+            );
+          } else {
+            console.log(error)
+              showAlert('El usuario no ha sigo agregado', 'error');
+          }
+      }
 
+      editIndex = undefined;
+      userBtn.classList.remove('edit-btn');
+      userBtn.innerText = 'Cargar usuario';
+      evt.target.reset();
+      elements.name.focus();
 
-    editIndex = undefined
-
-    userBtn.classList.remove('edit-btn')
-    userBtn.innerText = 'Cargar usuario'
-
-    renderizarTabla()
-
-    evt.target.reset();
-    elements.name.focus();
-
-    cargarUsuarios();
-    limpiar()
-
+      cargarUsuarios();
+      limpiar();
+  } catch (error) {
+      showAlert('Ha ocurrido un error', 'error');
+      console.log(error);
+  }
 }
 
 /* ===============================Reiniciar====================== */
@@ -180,53 +171,71 @@ async function addUser(evt) {
 function limpiar(){
     const el = userForm.elements;
     
-    el.fullName.value = '';
+    el.name.value = '';
     el.email.value = '';
+    el.gender.value = '';
+    el.role.value = 'USER_ROLE';
     el.password1.value = '';
     el.password2.value = ''; 
-    el.date.value = '';
-    el.country.value = '',
-    el.role.value = 'USER_ROLE';
 }
 /* ===============================DELETE====================== */
 
 async function deleteUser(id) {
-    const confirmation = await confirm(`¿Está seguro que desea eliminar este usuario?`);
+  const confirmation = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: '',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, borrarlo'
+  });
 
-    if (confirmation === true) {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.delete(`${URL}/users/${id}`/* , {
-                headers: { Authorization: token }
-            } */);
-            cargarUsuarios();
-        } catch (error) {
-            showAlert(`Error al borrar el user`, 'error');
-            console.log(error);
-        }
-        renderizarTabla();
+  if (confirmation.isConfirmed) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(`${URL}/users/${id}`, {
+        headers: { Authorization: token }
+      });
+      Swal.fire(
+        'El user ha sido borrado.',
+        '',
+        'success'
+      );
+      cargarUsuarios();
+    } catch (error) {
+      Swal.fire(
+        'error al borrar el user',
+        '',
+        'alert'
+      );
+      console.log(error);
     }
+    renderizarTabla();
+  }
 }
-
 /* =======================EDIT======================= */
 
 
 async function editUser(id) {
+  console.log(id)
     try {
         submitBtn.classList.add('admin-product__btn');
         submitBtn.innerText = 'Editar'
 
         const token = localStorage.getItem('token');
-        response = await axios.get (`${URL}/users/${id}`/* , {
+        response = await axios.get (`${URL}/users/${id}` , {
             headers: {
                 Authorization: token
             }
-        } */);
+        });
 
         const user = response.data.user;
 
         const el = userForm.elements;
 
+        console.log(el)
+        
         el.name.value = user.name;
         el.email.value = user.email;
         password1.required = false;
@@ -235,7 +244,7 @@ async function editUser(id) {
         el.role.value = user.role;
         editIndex = id;
     } catch (error) {
-        console.log('error')
+        console.log(error)
     }
 }
 

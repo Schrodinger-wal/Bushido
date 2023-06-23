@@ -23,7 +23,11 @@ try {
     Users = response.data.user; 
 
     console.log(`Usuario agregado`)
-    showAlert('El usuario se registro correctamente','sucess');
+    Swal.fire(
+        'Registro correcto!',
+        '',
+        'success'
+    );
 
     setTimeout(() => {
         window.location.href = "/login";

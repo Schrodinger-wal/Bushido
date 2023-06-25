@@ -3,12 +3,12 @@ const router = express.Router();
 
 const productController = require ("../controllers/product.controller");
 const uploadController = require ("../controllers/upload.controller");
-
+/* const cleanImageURL = require ("../middlewares/clean") */
 
 
 // Subir un producto
 
-router.post ('/products', uploadController.uploadProduct,productController.addProduct);
+router.post ('/products', uploadController.uploadProduct, productController.addProduct);
 
 // Obtener los productos
 

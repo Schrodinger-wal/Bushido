@@ -3,11 +3,6 @@ const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema ({
-    customerName: {
-        type: String,
-        required: true,
-    },
-    
     products: {
         type: [
             {
@@ -40,9 +35,15 @@ const orderSchema = new Schema ({
     status: {
         type: String,
         enum:  [ 'Procesado', 'En progreso', 'Listo'],
-        default: 'Precesado'
+        default: 'Procesado'
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+    },
+    customerName: {
+        type: String,
+        required: true,
     }
-
 });
 
 module.exports = mongoose.model('order', orderSchema);

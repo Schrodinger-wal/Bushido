@@ -33,24 +33,24 @@ const userSchema = new mongoose.Schema({
         type: Number,
         min: 12,
         max: 110,
-        required: true,
+        required: false,
     },
     country: {
         type: String,
-        required:true,
+        required: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     image: {
         type: String,
+        required: false,
     },
     createdAt: {
         type: Date,
         default: Date.now
     },
-
 })
 
 module.exports = mongoose.model('user', userSchema)

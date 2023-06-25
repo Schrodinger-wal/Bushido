@@ -1,3 +1,4 @@
+const { file } = require('googleapis/build/src/apis/file');
 const moongose = require ('mongoose');
 const Schema = moongose.Schema;
 
@@ -21,13 +22,15 @@ const productSchema = new Schema({
     state: {
         type: String,
         enum:  [ 'Stock', 'Sin stock'],
-        default: 'Stock'
+        default: 'Stock',
+        required: false,
     },
     category: {
         type: moongose.Schema.Types.ObjectId,
         ref: "Category",
-        required: true,
+        required: false,
     },
+    createdAt: {type: Number, default: Date.now},
 })
 
 module.exports = moongose.model('product', productSchema)

@@ -10,7 +10,7 @@ async function addProduct (req, res) {
     console.log(req.image);
     try {
         const newProduct = new product(req.body);
-        product.image = req.body.image;
+        newProduct.image = req.body.image;
         await newProduct.save();
 
         return res.status(200).send ({
@@ -32,7 +32,7 @@ async function addProduct (req, res) {
 
 async function getProduct (req, res) {
     console.log('la call')
-    const limit = 9
+    const limit = 40
 
     const itemsToSkip = limit * (req.query.skip - 1)
     const productos = await product.find().limit(limit).skip(itemsToSkip)

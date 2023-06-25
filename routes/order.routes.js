@@ -2,7 +2,7 @@ const express = require ("express");
 const router = express.Router();
 
 const orderController = require ('../controllers/order.controller')
-
+const verifyOrderAndCalculate = require ('../middlewares/orderVerify')
 
 // Subir una orden
 

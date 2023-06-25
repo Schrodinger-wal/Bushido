@@ -24,18 +24,18 @@
             <form class="admin-product__form" id="form-product" onsubmit="addProduct(event)">
                 <div class="admin-product__div--product">
                     <label class="admin-product__label" for="nameLabel">Titulo</label>
-                    <input class="admin-product__input" id="name" type="text" required>
+                    <input class="admin-product__input" id="name" placeholder="Remera John Doe | Basica"  type="text" required>
                 </div>
 
                 <div class="admin-product__div--product">
                     <label  class="admin-product__label" for="desLabel">Descripcion</label>
-                    <textarea name="description" id="desArea" cols="60" rows="10" required></textarea>
+                    <textarea name="description" id="desArea" cols="43" placeholder="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est, et nisi consequatur tempora perspiciatis cum labore incidunt assumenda, ipsam error, ut quae tempore. Amet recusandae fugit sunt nisi voluptas magnam!" rows="10" required></textarea>
                 </div>
 
                 <div class="admin-product__div--product">
                     <label class="admin-product__label" for="category">Categoria</label><br>
-                    <select name="category" id="category"  class="admin-product__input" onselect="" required>
-                        <option value="" selected></option>
+                    <select name="category" id="category"  class="admin-product__input"   onselect="" required>
+                        <option value="" aria-placeholder="--" selected></option>
                         <option value="648b31b22804c44cbd3d95d0">Buzo</option>
                         <option value="648b32042804c44cbd3d95d5">Remera</option>        
                     </select>
@@ -44,7 +44,7 @@
                 <div class="admin-product__div--product">
                     <label for="priceLabel" class="admin-product__label" 
                     >Precio</label>
-                    <input class="admin-product__input" id="priceLabel" name="price" type="number" required>
+                    <input class="admin-product__input" id="priceLabel" placeholder="$" name="price" type="number" required>
                 </div>
                 
                 <div class="admin-product__div--product">

@@ -1,5 +1,5 @@
 
-
+let Order = []
 const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('currentUser'));
 const cardContainer = document.getElementById('card-container')
@@ -32,7 +32,7 @@ function renderizarProductos(products) {
 
         card.innerHTML = `
                 <div class="card__header">
-                    <img src="${imageSrc}" alt="${product.name}" class="card__img">
+                    <img src="/upload/product/${imageSrc}" alt="${product.name}" class="card__img">
                 </div>
                 <div class="card__body">
                     <div class="card__title">
@@ -42,21 +42,21 @@ function renderizarProductos(products) {
                         ${product.description}"
                     </p>
                     <div class="card__price">
-                        ${product.price}
+                        $${product.price}
                     </div>
                 </div>
                 <div class="card__footer">
-
-                    <div class="card__btn-container">
-                    <a class="card__btn" onclick="addToOrder(${product._id})" >
-                            Agregar al carrito
-                        </a> 
-                    </div>
-                    <div class="card__btn-container">
-                        <a href="/product-detail?id=${product._id}" class="card__btn">
-                            Detalle 
-                        </a> 
-                    </div>
+                
+                <div class="card__btn-container">
+                <a class="card__btn" onclick="addToOrder('${product._id}')" >
+                Agregar al carrito
+                </a> 
+                </div>
+                <div class="card__btn-container">
+                    <a href="/product-detail?id=${product._id}" class="card__btn">
+                            Ver mas 
+                    </a> 
+                </div>
                 </div>`
 
         cardContainer.appendChild(card);
@@ -67,22 +67,43 @@ function renderizarProductos(products) {
 async function addToOrder(id) {
     try {
         const respuesta = await axios.get(`${URL}/products/${id}`);
-        const product = respuesta.data.product;
-        
+        const product = respuesta.data.newProduct;
+        console.log(product)
+        console.log(respuesta.data)
         if (!product) {
-            // Aquí puedes mostrar una alerta o realizar alguna acción si el producto no se encuentra
-            return;
+            return  Swal.fire(
+                'Producto no encontrado',
+                '',
+                'error'
+            );
         }
 
-        // Agregar el producto al carrito
-        const order = JSON.parse(localStorage.getItem('order')) || [];
-        order.push(product);
-        localStorage.setItem('order', JSON.stringify(order));
+        const newOrder = {
+            id: product._id,
+            name: product.name,
+            image: '/upload/product/' + product.image,
+            price: product.price,
+            cant: 1,
+            total: product.price
+        }
 
-        // Mostrar una alerta o realizar otra acción para confirmar que el producto se agregó al carrito
+        const prod = Order.find((prod)=> {
+            if(prod.name === product.name) {
+                prod.cant = parseInt(prod.cant) + 1;
+                prod.total = prod.cant * parseInt(prod.price);
+                return prod;
+            }
+        })
+        // Agregar el producto al carrito
+        if(!prod) {
+            Order.push(newOrder);
+        }
+
+        sessionStorage.setItem('order',JSON.stringify(Order));
+
         Swal.fire(
-            'Enhorabuena!',
-            'Producto agregado al carrito.',
+            'Producto agregado al carrito!',
+            '',
             'success'
         );
 

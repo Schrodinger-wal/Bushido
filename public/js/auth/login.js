@@ -3,6 +3,8 @@ const loginForm = document.getElementById('loginForm')
 console.log(loginForm);
 console.log("Evento de envío del formulario agregado")
 
+/* Se escucha y ejecuta la funcion login */
+
 loginForm.addEventListener('submit',async (event) => {
     event.preventDefault();
 

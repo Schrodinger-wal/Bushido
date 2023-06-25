@@ -1,33 +1,39 @@
 const multer = require('multer');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const fs = require ('fs');
+const {v4: uuidv4} = require('uuid');
+const { google } = require('googleapis');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'public/upload/product')
     },
     filename: (req, file, callback) => {
-        const fileExt = file.originalname.split('.').at(-1);
+        const fileExt = file.originalname.split('.').at(-1)
+        const fileName = `${uuidv4()}.${fileExt}`
+        req.body.image = fileName
+        callback(null, fileName)
 
-        const fileName = `${uuidv4()}.${fileExt}`;
-
-        req.body.image = fileName;
-        callback(null, fileName) 
+                // Eliminar la parte "C:\fakepath\" de la URL generada
+                const cleanImageUrl = req.body.image.replace("C:\\fakepath\\", "");
     }
 })
 
-const uploadMulter = multer({
+const uploadMulter = multer ({
     storage,
-    limits: { fileSize: 1024 * 1024 * 10 },
+    limits: {fileSize: 1024 * 1024 * 20},
     fileFilter: (req, file, callback) => {
-        const type = file.mimetype.split('/')[0]
-        type === 'image' ? callback(null, true)  : callback(null, false);
+        file.mimetype.split('/')[0] === 'image' ? callback (null, true) : callback(null, false)
     }
 })
 
+const uploadProduct= uploadMulter.single('image');
 
-const uploadProduct = uploadMulter.single('file');
-
+uploadProduct.cleanImageURL = (req, res, next) => {
+    if (req.body.image) {
+        req.body.image = req.body.image.replace("C:\\fakepath\\", "");
+    }
+    next();
+}
 
 module.exports = {
     uploadProduct

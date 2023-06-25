@@ -1,7 +1,7 @@
 async function verifyOrderAndCalculate(orderProducts) {
     let total = 0;    
     for (const prod of orderProducts) {
-        const product = await Product.findById(prod.product);
+        const product = await product.findById(prod.product);
 
         if(!product) throw new Error('Producto no encontrado');
 

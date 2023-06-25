@@ -1,5 +1,6 @@
 .product-detail {
     display: flex;
+    background-image: url(/Assets/banners/African-titulo.png);
     flex-direction: column;
     align-items: center;
     padding: 20px;
@@ -11,7 +12,8 @@
   
   .product-detail__image {
     width: 100%;
-    max-width: 400px;
+    width: 350px;
+    max-width: 700px;
     height: auto;
   }
   
@@ -21,17 +23,22 @@
   }
   
   .product-detail__title {
+    color: whitesmoke;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
   }
   
   .product-detail__description {
+    color: whitesmoke;
     margin-bottom: 10px;
+    font-size: 1.25rem;
   }
   
   .product-detail__price {
+    color: whitesmoke;
     font-size: 20px;
+    font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
   }
@@ -50,8 +57,9 @@
   
   .product-detail__add-to-cart {
     padding: 10px 20px;
+    margin: 1,5rem;
     background-color: #af1400;
-    color: white;
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -59,20 +67,23 @@
   }
   
   .product-detail__footer {
-    background-color: #333;
+    background-image: url(/Assets/banners/detail-2.png);
     padding: 20px;
+    margin: 20px;
+    width: 70%;
   }
   
   .product-detail__cant-container {
     display: flex;
     align-items: center;
+    font-size: 1.25rem;
     justify-content: space-between;
-    color: #fff;
+    color: #ffffff;
     margin-top: 20px;
   }
   
   .product-detail__cant {
-    font-size: 18px;
+    font-size: 1.25rem;
     font-weight: bold;
   }
   
@@ -82,16 +93,17 @@
   }
   
   .product-detail__cant-buttons button {
-    background-color: #ff5500;
-    color: #fff;
+    background-color: #af1400;
+    color: #000000;
     border: none;
     font-size: 24px;
-    padding: 10px 15px;
+    border-radius: 20%;
+    padding: 7px 11px;
     cursor: pointer;
   }
   
   .product-detail__cant-buttons button:hover {
-    background-color: #ff4400;
+    background-color: #af1400;
   }
   
   .product-detail__input-Cant {
@@ -99,7 +111,7 @@
     height: 30px;
     text-align: center;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     margin: 0 10px;
   }

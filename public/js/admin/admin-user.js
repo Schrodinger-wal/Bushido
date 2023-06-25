@@ -12,6 +12,7 @@ const tableBody = document.getElementById('table-body');
 
 let editIndex = undefined;
 
+/* ===============Carga de usuarios=============== */
 
 async function cargarUsuarios() {
 try {
@@ -22,9 +23,9 @@ try {
 } catch (error) {
   console.log(error)
 }
-
-
 }
+
+/* ===============Renderizacion===================*/
 
 console.log(users)
 function renderizarTabla(users) {
@@ -53,7 +54,7 @@ function renderizarTabla(users) {
           <td class="product__price">
             ${user.role}
           </td>
-          <td class="product__price">
+          <td class="product__gender">
           ${user.gender || "-"}
           </td>
           <td class="product__price">
@@ -127,27 +128,39 @@ async function addUser(evt) {
           });
 
           if (response.data.success) {
-              showAlert('El usuario se editó correctamente', 'success');
+            Swal.fire(
+              'El usuario se edito con exito!',
+              '',
+              'success'
+            );
               passForm.forEach((form) => {
                   form.style.display = 'block';
               });
               password1.required = true;
               password2.required = true;
           } else {
-              showAlert('No se pudo modificar el usuario', 'warning');
+            Swal.fire(
+              'No se pudo editar el usuario!',
+              '',
+              'Error'
+            );
           }
       } else {
-          const response = await axios.post(`${URL}/users`, newUser);
+        const response = await axios.post(`${URL}/users`, newUser);
 
           if (response.data.success) {
             Swal.fire(
-              'Exito!',
-              'El usuario ha sido agregado.',
+              'El usuario ha sido agregado!',
+              '',
               'success'
             );
           } else {
             console.log(error)
-              showAlert('El usuario no ha sigo agregado', 'error');
+            Swal.fire(
+              'El usuario ha sido agregado!',
+              '',
+              'success'
+            );
           }
       }
 
@@ -160,12 +173,16 @@ async function addUser(evt) {
       cargarUsuarios();
       limpiar();
   } catch (error) {
-      showAlert('Ha ocurrido un error', 'error');
+    Swal.fire(
+      'El usuario ha sido agregado!',
+      '',
+      'success'
+    );
       console.log(error);
   }
 }
 
-/* ===============================Reiniciar====================== */
+/* ===============================REINICIAR====================== */
 
 
 function limpiar(){
@@ -205,7 +222,7 @@ async function deleteUser(id) {
       cargarUsuarios();
     } catch (error) {
       Swal.fire(
-        'error al borrar el user',
+        'Error al borrar el user',
         '',
         'alert'
       );
@@ -220,15 +237,12 @@ async function deleteUser(id) {
 async function editUser(id) {
   console.log(id)
     try {
-        submitBtn.classList.add('admin-product__btn');
-        submitBtn.innerText = 'Editar'
+/*       const submitBtn = document.querySelector('userBtn');
+      submitBtn.classList.add("edit-btn");
+      submitbtn.innerText = "Modificar producto"; */
 
         const token = localStorage.getItem('token');
-        response = await axios.get (`${URL}/users/${id}` , {
-            headers: {
-                Authorization: token
-            }
-        });
+        response = await axios.get(`${URL}/users/${id}`);
 
         const user = response.data.user;
 

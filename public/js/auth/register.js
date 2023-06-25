@@ -1,8 +1,10 @@
 const registerForm = document.querySelector('#registerForm');
 const registerBtn = document.getElementById ('registerSubmit');
-const URL = 'http://localhost:1400/api';
+
+/* Se escucha y ejecuta la funcion register */
 
 registerForm.addEventListener ("submit", async (event) => {
+
 
 try {
     event.preventDefault();

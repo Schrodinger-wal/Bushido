@@ -3,6 +3,7 @@ const token = localStorage.getItem('token')
 
 let selectCategoryHTML = document.getElementById('category');
 
+let editIndex;
 
 const productForm = document.getElementById('form-product');
 const submitbtn = document.getElementById('btnProduct');
@@ -11,14 +12,16 @@ const tableBody = document.getElementById('tableBody')
 
 /* ===============================TABLA================================== */
 
-async function cargarCategorias(){
+/* ============CARGA DE PRODUCTOS Y CATEGORIAS======== */
+
+async function cargarCategorias() {
     try {
-        
+
         const response = await axios.get(`${URL}/category`)
         const categories = response.data.categories
         selectCategoryHTML.innerHTML = '<option value="" selected></option>';
-        categories.forEach((cat)=> {
-            selectCategoryHTML.innerHTML += `<option value="${cat._id}">${cat.name}</option>` 
+        categories.forEach((cat) => {
+            selectCategoryHTML.innerHTML += `<option value="${cat._id}">${cat.name}</option>`
             console.log(response.data.categories);
         })
     } catch (error) {
@@ -32,36 +35,34 @@ cargarCategorias()
 async function cargarProductos() {
     try {
         const respuesta = await axios.get(`${URL}/products`)
-        
-        console.log(respuesta.data.products)
+
 
         products = respuesta.data.productos
+        console.log(respuesta.data.products)
         renderizarTabla(products)
-    } catch (Error) {
+    } catch (error) {
         console.warn(error)
     }
 }
 
 cargarProductos();
 
-let editIndex;
+/* =======RENDERIZACION */
 
 function renderizarTabla(products) {
     tableBody.innerHTML = "";
 
-    if(products.length === 0) {
+    if (products.length === 0) {
         tableBody.innerHTML = `<tr> <td colspan= "6">No se 
         encontraron productos</td> </tr>`
         return;
     }
     products.forEach((producto) => {
-        
-        let imageSrc = producto.image ? `${URL}/products/upload/image/${producto.image}` : '/assets/page-notifier/not-found.png';
-        const tableRow = 
-    `<tr class="product">
+        const tableRow =
+            `<tr class="product">
         <td class="product__img-cell">
             <img class= "product__img" 
-            src="${imageSrc}">                    
+            src="/upload/product/${producto.image}">                    
         </td>
         <td class= "product__name">
             ${producto.name}
@@ -70,133 +71,225 @@ function renderizarTabla(products) {
             ${producto.description}    
         </td>
         <td class= "product__price">
-            $ ${producto.price}
+            ${producto.price}
         </td>
         <td class= "product__actions">
-            <button class="product__action-btn" onclick="deleteProduct(${producto._id})"> 
+            <button class="product__action-btn" onclick="deleteProduct('${producto._id}')"> 
                 <i class="fa-solid fa-trash-can"></i>
             </button>
-            <button class="product__action-btn btn-edit" onclick="editProduct(${producto._id})">
+            <button class="product__action-btn btn-edit" onclick="editProduct('${producto._id}')">
                 <i class="fa-solid fa-pencil"></i>
             </button>
         </td>
-    </tr>`
-    tableBody.innerHTML += tableRow
+
+        </tr>`
+        tableBody.innerHTML += tableRow
     });
 }
 
+/*============AGREGAR UN PRODUCTO============= */
 
+async function addProduct(evt) {
+    evt.preventDefault();
 
-    async function addProduct(evt) {
-        evt.preventDefault();
-    
-        const elements = evt.target.elements;
-        const formFile = new FormData(evt.target);
-    
-        const newProduct = {
+    const elements = evt.target.elements;
+    const formFile = new FormData(evt.target);
+
+    const newProduct = {
         name: elements.name.value,
         description: elements.description.value,
         price: elements.price.value,
         category: elements.category.value,
-        };
-    
-        const token = localStorage.getItem('token');
-    
-        try {
+        image: elements.image.value,
+    };
+
+    const token = localStorage.getItem('token');
+
+    try {
         if (editIndex) {
             const response = await axios.put(`${URL}/products/${editIndex}`, newProduct, {
-            headers: {
-                Authorization: token,
-            },
+                headers: {
+                    Authorization: token,
+                },
             });
-    
+
             if (response.data.success) {
-            showAlert('El producto se editó correctamente', 'success');
+                showAlert('El producto se editó correctamente', 'success');
             } else {
-            showAlert('No se pudo modificar el producto', 'warning');
+                console.log(error)
+                showAlert('No se pudo modificar el producto', 'warning');
             }
         } else {
-            const response = await axios.post(`${URL}/products`, newProduct, {
-            headers: {
-                Authorization: token,
-            },
-            });
-    
+
+            const response = await axios.post(`${URL}/products`, newProduct)
+
             if (response.data.success) {
-            showAlert('El producto se ha agregado exitosamente', 'success');
+                Swal.fire(
+                    'El producto se agrego con exito!',
+                    '',
+                    'success'
+                );
             } else {
-            showAlert('No se pudo agregar el producto', 'warning');
+                Swal.fire(
+                    'El producto se agrego con exito!',
+                    '',
+                    'success'
+                );
             }
         }
-    
+
         editIndex = undefined;
-        productBtn.classList.remove('edit-btn');
-        productBtn.innerText = 'Cargar producto';
+        submitbtn.classList.remove('edit-btn');
+        submitbtn.innerText = 'Cargar producto';
         evt.target.reset();
         elements.name.focus();
-    
+
         cargarProductos();
         limpiar();
-        } catch (error) {
+    } catch (error) {
         showAlert('Ha ocurrido un error', 'error');
         console.log(error);
         console.log(error.response);
-        }
     }
-    
-    /* ===============================Reiniciar====================== */
-    
-    
-    function limpiar(){
-        const el = productForm.elements;
-        
-        el.name.value = '';
-        el.description.value = '';
-        el.price.value = '';
-        el.category.value = '';
-    }
+}
+
+/* ===============================Reiniciar====================== */
+
+
+function limpiar() {
+    const el = productForm.elements;
+
+    el.name.value = '';
+    el.description.value = '';
+    el.price.value = '';
+    el.category.value = '';
+}
 
 
 /* ===========================DELETE=============================== */
 
-async function deleteProduct(id) {
-    const confirmation = await confirm(`¿Está seguro que desea eliminar este producto?`);
 
-    if (confirmation === true) {
+async function deleteProduct(id) {
+    const confirmation = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: '',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, borrarlo',
+    });
+
+    if (confirmation.isConfirmed) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.delete(`${URL}/products/${id}`, /* {
+            const response = await axios.delete(`${URL}/products/${id}`, {
                 headers: { Authorization: token }
-            } */);
+                }) ;
             Swal.fire(
                 'El producto ha sido borrado correctamente.',
-                'moviendonos a la pagina principal!!',
-                'success'
+                '',
+                'success',
             );
-            cargarUsuarios();
+            cargarProductos();
         } catch (error) {
             Swal.fire(
-                'Error al borrar el producto.',
-                'moviendonos a la pagina principal!!',
-                'error'
+                'Error al borrar productos',
+                '',
+                'error',
             );
             console.log(error);
         }
         renderizarTabla();
     }
 }
+
+
 /* ================================EDIT=========================== */
 
-function editProduct(id) {
+
+function editProduct(idx) {
+
+    submitbtn.classList.add("edit-btn");
+    submitbtn.innerText = "Modificar producto"
+
+    let product = products[idx];
+
+    // console.table(product);
+    const el = productForm.elements;
+    console.log(el)
+    el.description.value = product.description;
+    el.name.value = product.name;
+    el.price.value = product.price;
+    el.image.value = product.image;
+    //** VAN A MANDAR ESTE OBJETO A EL BACKEND AL ENDPOINT DE HACER PUT, UNA VEZ RESUELTO EL LLAMADO, VUELVEN A A PEDIR LOS PRODUCTOS
+
+}
+
+
+
+/* async function editProduct(id) {
     submitbtn.classList.add("edit-btn");
     submitbtn.innerText = "Modificar producto";
 
-    let product = products[id];
-    const el = productForm.elements;
-    el.name.value = product.name;
-    el.description.value = product.description;
-    el.price.value = product.price;
-    el.image.value = product.image;
+    
 
-    editIndex = id;
+    try {
+        const response = await axios.get(`${URL}/products/${id}`, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        const product = response.data.producto;
+        const { name, description, price, image, category } = product;
+        const elements = productForm.elements;
+
+        elements.name.value = product.name;
+        elements.description.value = product.description;
+        elements.price.value = product.price;
+        elements.image.value = product.image;
+        elements.category.value = product.category;
+
+        editIndex = id;
+    } catch (error) {
+        showAlert('Error al obtener los datos del producto', 'error');
+        console.log(error);
+    }
 }
+
+async function updateProduct() {
+    const elements = productForm.elements;
+    const updatedProduct = {
+        name: elements.name.value,
+        description: elements.description.value,
+        price: elements.price.value,
+        image: elements.image.value,
+        category: elements.category.value
+    };
+
+    try {
+        const response = await axios.put(`${URL}/products/${editIndex}`, updatedProduct, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        if (response.data.success) {
+            showAlert('El producto se editó correctamente', 'success');
+        } else {
+            showAlert('No se pudo modificar el producto', 'warning');
+        }
+
+        editIndex = undefined;
+        submitbtn.classList.remove('edit-btn');
+        submitbtn.innerText = 'Cargar producto';
+        productForm.reset();
+        elements.name.focus();
+
+        cargarProductos();
+        limpiar();
+    } catch (error) {
+        showAlert('Ha ocurrido un error al actualizar el producto', 'error');
+        console.log(error);
+    }
+} */

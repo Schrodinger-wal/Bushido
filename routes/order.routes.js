@@ -6,7 +6,7 @@ const verifyOrderAndCalculate = require ('../middlewares/orderVerify')
 
 // Subir una orden
 
-router.post ('/order', verifyOrderAndCalculate, orderController.createOrder);
+router.post ('/order', orderController.createOrder);
 
 // Obtener las ordenes
 

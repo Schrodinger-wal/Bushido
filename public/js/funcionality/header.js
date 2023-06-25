@@ -70,7 +70,8 @@ function logout() {
     document.getElementById('admin-user').remove()
 
     Swal.fire(
-        'moviendonos a la pagina principal!!',
+        '¡Moviendonos a la pagina principal!',
+        "",
         'success'
     );
     setTimeout(()=>{

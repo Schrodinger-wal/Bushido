@@ -61,7 +61,7 @@ async function getUsers(req, res) {
 async function getUserById(req, res) {
     const id = req.params.id;
 
-    if (req.user.role !== 'ADMIN_ROLE' && req.user._id !== id) {
+    if (req.user.role === 'ADMIN_ROLE' && req.user._id !== id) {
         return res.status(400).json({
             msg: 'No posee los permisos requeridos ;)'
         });

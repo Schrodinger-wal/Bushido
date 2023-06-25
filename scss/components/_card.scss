@@ -6,9 +6,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
-    gap: 30px;
-/*     display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
+    gap: 70px;
 }
 
 .card:hover{
@@ -28,11 +26,12 @@
     padding: 1rem;
     border-radius: 3%;
     box-shadow: 0px 1px 10px rgba(0,0,0,0.3);
-    background-color: rgb(61, 61, 61);
+    background-color: #3f3f3f;
     width: 330px;
     transition: all 400ms ease-out;
 	cursor: default;
     overflow: hidden;
+    color: whitesmoke;
 
     &__header {
         height: 300px;
@@ -59,7 +58,7 @@
         padding: 1rem 0;
         line-height: 1.25;
         border-radius: 5%;
-        overflow: scroll;
+        overflow: hidden;
         max-height: 150px;
         margin-bottom: 0.75rem;
     }
@@ -70,6 +69,9 @@
     &__footer {
         display: flex;
         justify-content: space-between;
+        gap: 0.75rem;
+        flex-direction: column-reverse;
+        align-items: center;
     }
     &__date {
         /* justify-content: left; */
@@ -81,7 +83,7 @@
     &__btn {
         text-decoration: none;
         display: inline-block;
-        color: red;
+        color: #c9542a;
         cursor: pointer;
     }
 
@@ -92,8 +94,8 @@
 }
 
 .card__img {
-    width: 330px;
-    height: 100%;
+    width: auto;
+    height: auto;
     object-fit: cover;
 }
 
@@ -122,7 +124,7 @@
             background-color: rgb(56, 49, 37);
         }
         .card__img {
-            width: 100px;
+            width: 100%;
         }
     }
 }
